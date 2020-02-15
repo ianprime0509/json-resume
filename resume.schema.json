@@ -1,0 +1,596 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "title": "JSON Resume",
+  "type": "object",
+  "description": "A standard JSON format for resume data.",
+  "additionalProperties": false,
+  "definitions": {
+    "prioritizable": {
+      "type": "object",
+      "properties": {
+        "priority": {
+          "type": "number",
+          "description": "A rating of how important this item is, with lesser numbers indicating less importance.",
+          "default": 0
+        }
+      }
+    },
+    "basics": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["name"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Your full name."
+        },
+        "label": {
+          "type": "string",
+          "description": "Your title (e.g. Web Developer)."
+        },
+        "image": {
+          "type": "string",
+          "description": "A picture of you. Must be a URL (as per RFC 3986) to a image in JPEG or PNG format."
+        },
+        "email": {
+          "type": "string",
+          "description": "Your email address (e.g. thomas@gmail.com).",
+          "format": "email"
+        },
+        "phone": {
+          "type": "string",
+          "description": "Your phone number. Phone numbers are stored as strings so use any format you like, e.g. 712-117-2923."
+        },
+        "url": {
+          "type": "string",
+          "description": "A URL (as per RFC 3986) to your website, such as your personal homepage or portfolio.",
+          "format": "uri"
+        },
+        "summary": {
+          "type": "string",
+          "description": "A short (2-3 sentence) biography about yourself."
+        },
+        "location": {
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "address": {
+              "type": "string",
+              "description": "The street address of your current residence. To add multiple address lines, use \\n. For example, 1234 Glücklichkeit Straße\\nHinterhaus 5. Etage li."
+            },
+            "postalCode": {
+              "type": "string",
+              "description": "The postal code of your current residence (e.g. 22181)."
+            },
+            "city": {
+              "type": "string",
+              "description": "The city of your current residence (e.g. Vienna)."
+            },
+            "countryCode": {
+              "type": "string",
+              "description": "The country of your current residence. This should be a code as per ISO-3166-1 ALPHA-2, e.g. US, AU, IN."
+            },
+            "region": {
+              "type": "string",
+              "description": "The general region in which you live, such as a US state or province."
+            }
+          }
+        },
+        "profiles": {
+          "type": "array",
+          "description": "Your social network profiles.",
+          "additionalItems": false,
+          "required": ["network", "username"],
+          "items": {
+            "type": "object",
+            "additionalProperties": true,
+            "properties": {
+              "network": {
+                "type": "string",
+                "description": "The name of the network (e.g. Facebook or Twitter)."
+              },
+              "username": {
+                "type": "string",
+                "description": "Your username or handle on the network (e.g. neutralthoughts)."
+              },
+              "url": {
+                "type": "string",
+                "description": "A URL to your profile on the network (e.g. https://twitter.com/neutralthoughts)."
+              }
+            }
+          }
+        }
+      }
+    },
+    "work": {
+      "allOf": [
+        { "$ref": "#/definitions/prioritizable" },
+        {
+          "type": "object",
+          "description": "A job or other work experience.",
+          "additionalProperties": true,
+          "required": ["name", "startDate"],
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "The name of the company where you worked (e.g. Facebook)."
+            },
+            "location": {
+              "type": "string",
+              "description": "The location of the job or of the company headquarters, as appropriate (e.g. Menlo Park, CA)."
+            },
+            "description": {
+              "type": "string",
+              "description": "A brief description of the company (e.g. Social Media Company)."
+            },
+            "position": {
+              "type": "string",
+              "description": "Your position while at the job (e.g. Software Engineer)."
+            },
+            "url": {
+              "type": "string",
+              "description": "A URL to the company's website or another relevant page (e.g. https://facebook.com).",
+              "format": "uri"
+            },
+            "startDate": {
+              "type": "string",
+              "description": "The date on which you started the job, in ISO 8601 format (e.g. 2014-06-29).",
+              "format": "date"
+            },
+            "endDate": {
+              "type": "string",
+              "description": "The date on which you ended the job, in ISO 8601 format (e.g. 2012-06-29). Omit this property if the job is ongoing.",
+              "format": "date"
+            },
+            "summary": {
+              "type": "string",
+              "description": "An overview of your responsibilities at the company."
+            },
+            "highlights": {
+              "type": "array",
+              "description": "A list of highlights for the job, such as accomplishments or responsibilities.",
+              "additionalItems": false,
+              "items": {
+                "type": "string",
+                "description": "A job highlight (e.g. Increased profits by 20% from 2011-2012 through viral advertising)."
+              }
+            }
+          }
+        }
+      ]
+    },
+    "volunteer": {
+      "allOf": [
+        { "$ref": "#/definitions/prioritizable" },
+        {
+          "type": "object",
+          "description": "A volunteer position or other volunteer opportunity.",
+          "additionalProperties": true,
+          "required": ["organization", "startDate"],
+          "properties": {
+            "organization": {
+              "type": "string",
+              "description": "The name of the organization at which you volunteered (e.g. UNICEF)."
+            },
+            "position": {
+              "type": "string",
+              "description": "Your position as a volunteer (e.g. Software Engineer)."
+            },
+            "url": {
+              "type": "string",
+              "description": "A URL to the organization's website or another relevant page (e.g. https://unicef.org).",
+              "format": "uri"
+            },
+            "startDate": {
+              "type": "string",
+              "description": "The date on which you started the volunteer position, in ISO 8601 format (e.g. 2014-06-29).",
+              "format": "date"
+            },
+            "endDate": {
+              "type": "string",
+              "description": "The date on which you ended the volunteer position, in ISO 8601 format (e.g. 2012-06-29). Omit this property if the position is ongoing.",
+              "format": "date"
+            },
+            "summary": {
+              "type": "string",
+              "description": "An overview of your responsibilities at the organization."
+            },
+            "highlights": {
+              "type": "array",
+              "description": "A list of highlights for the volunteer position, such as accomplishments or responsibilities.",
+              "additionalItems": false,
+              "items": {
+                "type": "string",
+                "description": "A position highlight (e.g. Engineered a new marketing platform, increasing donations by 20%)."
+              }
+            }
+          }
+        }
+      ]
+    },
+    "education": {
+      "allOf": [
+        { "$ref": "#/definitions/prioritizable" },
+        {
+          "type": "object",
+          "description": "A degree, school or other educational experience.",
+          "additionalProperties": true,
+          "required": ["institution", "startDate"],
+          "properties": {
+            "institution": {
+              "type": "string",
+              "description": "The institution you attended (e.g. Massachusetts Institute of Technology)."
+            },
+            "area": {
+              "type": "string",
+              "description": "The area of your degree (e.g. Arts)."
+            },
+            "studyType": {
+              "type": "string",
+              "description": "The type of degree you received (e.g. Bachelor)."
+            },
+            "startDate": {
+              "type": "string",
+              "description": "The date on which you started the education, in ISO 8601 format (e.g. 2012-04-29).",
+              "format": "date"
+            },
+            "endDate": {
+              "type": "string",
+              "description": "The date on which you completed the education, in ISO 8601 format (e.g. 2012-04-29). Omit this property if the education is ongoing.",
+              "format": "date"
+            },
+            "gpa": {
+              "type": "string",
+              "description": "Your grade point average (e.g. 3.67/4.0)."
+            },
+            "courses": {
+              "type": "array",
+              "description": "A list of notable courses and subjects which you took.",
+              "additionalItems": false,
+              "items": {
+                "type": "string",
+                "description": "The title of the course or subject (e.g. H1302 - Introduction to American history)."
+              }
+            }
+          }
+        }
+      ]
+    },
+    "award": {
+      "allOf": [
+        { "$ref": "#/definitions/prioritizable" },
+        {
+          "type": "object",
+          "description": "An award or other accolade.",
+          "additionalProperties": true,
+          "required": ["title"],
+          "properties": {
+            "title": {
+              "type": "string",
+              "description": "The title of the award (e.g. One of the 100 greatest minds of the century)."
+            },
+            "date": {
+              "type": "string",
+              "description": "The date on which you received the award, in ISO 8601 format (e.g. 1989-06-12).",
+              "format": "date"
+            },
+            "awarder": {
+              "type": "string",
+              "description": "The organization that presented the award (e.g. Time Magazine)."
+            },
+            "summary": {
+              "type": "string",
+              "description": "A brief summary of why you received the award (e.g. Received for my work with Quantum Physics)."
+            }
+          }
+        }
+      ]
+    },
+    "publication": {
+      "allOf": [
+        { "$ref": "#/definitions/prioritizable" },
+        {
+          "type": "object",
+          "description": "A publication, such as a journal or newspaper article.",
+          "additionalProperties": true,
+          "required": ["name"],
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "The name of the publication (e.g. The World Wide Web)."
+            },
+            "publisher": {
+              "type": "string",
+              "description": "The name of the publisher (e.g. IEEE, Computer Magazine)."
+            },
+            "releaseDate": {
+              "type": "string",
+              "description": "The date on which this publication was released, in ISO 8601 format (e.g. 1990-08-01)."
+            },
+            "url": {
+              "type": "string",
+              "description": "A URL to the publication or another relevant page (e.g. http://www.computer.org.example.com/csdl/mags/co/1996/10/rx069-abs.html)."
+            },
+            "summary": {
+              "type": "string",
+              "description": "A short summary of publication (e.g. Discussion of the World Wide Web, HTTP, HTML)."
+            }
+          }
+        }
+      ]
+    },
+    "skill": {
+      "allOf": [
+        { "$ref": "#/definitions/prioritizable" },
+        {
+          "type": "object",
+          "description": "A skill or talent.",
+          "additionalProperties": true,
+          "required": ["name"],
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "The name of the skill (e.g. Web Development)."
+            },
+            "level": {
+              "type": "string",
+              "description": "Your level of proficiency in the skill (e.g. Master)."
+            },
+            "keywords": {
+              "type": "array",
+              "description": "A list of keywords pertaining to this skill.",
+              "additionalItems": false,
+              "items": {
+                "type": "string",
+                "description": "A single keyword (e.g. HTML)."
+              }
+            }
+          }
+        }
+      ]
+    },
+    "language": {
+      "allOf": [
+        { "$ref": "#/definitions/prioritizable" },
+        {
+          "type": "object",
+          "description": "A language that you speak.",
+          "additionalProperties": true,
+          "required": ["language"],
+          "properties": {
+            "language": {
+              "type": "string",
+              "description": "The name of the language (e.g. English, Spanish)."
+            },
+            "fluency": {
+              "type": "string",
+              "description": "Your proficiency in the language (e.g. Fluent, Beginner)."
+            }
+          }
+        }
+      ]
+    },
+    "interest": {
+      "allOf": [
+        { "$ref": "#/definitions/prioritizable" },
+        {
+          "type": "object",
+          "descrption": "A personal interest or hobby.",
+          "additionalProperties": true,
+          "required": ["name"],
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "The name or subject of the interest (e.g. Philosophy)."
+            },
+            "keywords": {
+              "type": "array",
+              "description": "A list of keywords relating to the interest.",
+              "additionalItems": false,
+              "items": {
+                "type": "string",
+                "description": "A single keyword (e.g. Friedrich Nietzsche)."
+              }
+            }
+          }
+        }
+      ]
+    },
+    "reference": {
+      "allOf": [
+        { "$ref": "#/definitions/prioritizable" },
+        {
+          "type": "object",
+          "description": "A professional reference.",
+          "additionalProperties": true,
+          "required": ["name"],
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "The name of the individual giving the reference (e.g. Timothy Cook)."
+            },
+            "reference": {
+              "type": "string",
+              "description": "A brief testimonial from the individual (e.g. Joe blogs was a great employee, who turned up to work at least once a week. He exceeded my expectations when it came to doing nothing.)."
+            }
+          }
+        }
+      ]
+    },
+    "project": {
+      "allOf": [
+        { "$ref": "#/definitions/prioritizable" },
+        {
+          "type": "object",
+          "description": "A project on which you worked, potentially as part of some other experience.",
+          "additionalProperties": true,
+          "required": ["name"],
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "The name of the project (e.g. The World Wide Web)."
+            },
+            "description": {
+              "type": "string",
+              "description": "A short summary of the project (e.g. Collated works of 2017)."
+            },
+            "highlights": {
+              "type": "array",
+              "description": "A list of highlights of the project, such as what you accomplished or created.",
+              "additionalItems": false,
+              "items": {
+                "type": "string",
+                "description": "A single highlight (e.g. Directs you close but not quite there)."
+              }
+            },
+            "keywords": {
+              "type": "array",
+              "description": "A list of keywords relating to the project.",
+              "additionalItems": false,
+              "items": {
+                "type": "string",
+                "description": "A single keyword (e.g. AngularJS)."
+              }
+            },
+            "startDate": {
+              "type": "string",
+              "description": "The date on which you started the project, in ISO 8601 format (e.g. 2012-04-29).",
+              "format": "date"
+            },
+            "endDate": {
+              "type": "string",
+              "description": "The date on which you completed the project, in ISO 8601 format (e.g. 2012-06-29). Omit this property if the project is ongoing.",
+              "format": "date"
+            },
+            "url": {
+              "type": "string",
+              "format": "uri",
+              "description": "A URL to the project website or another relevant page (e.g. http://www.computer.org/csdl/mags/co/1996/10/rx069-abs.html)."
+            },
+            "roles": {
+              "type": "array",
+              "description": "A list of your roles on this project or in the organization behind it.",
+              "additionalItems": false,
+              "items": {
+                "type": "string",
+                "description": "A single role (e.g. Team Lead, Speaker, Writer)."
+              }
+            },
+            "entity": {
+              "type": "string",
+              "description": "The company or other entity with which this project was affiliated (e.g. GNU)."
+            },
+            "type": {
+              "type": "string",
+              "description": "The type of this project (e.g. volunteering, presentation, talk, application, conference)."
+            }
+          }
+        }
+      ]
+    },
+    "meta": {
+      "type": "object",
+      "description": "Information about the schema version or other tooling configuration.",
+      "additionalProperties": true,
+      "properties": {
+        "canonical": {
+          "type": "string",
+          "description": "The URL (as per RFC 3986) to the latest version of this document."
+        },
+        "version": {
+          "type": "string",
+          "description": "A version field which follows semantic versioning (e.g. v1.0.0)."
+        },
+        "lastModified": {
+          "type": "string",
+          "description": "The date on which this document was last modified, in ISO 8601 format (YYYY-MM-DDThh:mm:ss)."
+        }
+      }
+    }
+  },
+  "required": ["basics"],
+  "properties": {
+    "basics": { "$ref": "#/definitions/basics" },
+    "work": {
+      "type": "array",
+      "description": "Your work experience.",
+      "additionalItems": false,
+      "items": {
+        "$ref": "#/definitions/work"
+      }
+    },
+    "volunteer": {
+      "type": "array",
+      "description": "Your volunteer experience.",
+      "additionalItems": false,
+      "items": {
+        "$ref": "#/definitions/volunteer"
+      }
+    },
+    "education": {
+      "type": "array",
+      "description": "Your education history.",
+      "additionalItems": false,
+      "items": {
+        "$ref": "#/definitions/education"
+      }
+    },
+    "awards": {
+      "type": "array",
+      "description": "Awards that you have received.",
+      "additionalItems": false,
+      "items": {
+        "$ref": "#/definitions/award"
+      }
+    },
+    "publications": {
+      "type": "array",
+      "description": "Publications that you have authored or to which you have contributed.",
+      "additionalItems": false,
+      "items": {
+        "$ref": "#/definitions/publication"
+      }
+    },
+    "skills": {
+      "type": "array",
+      "description": "Your skills and talents.",
+      "additionalItems": false,
+      "items": {
+        "$ref": "#/definitions/skill"
+      }
+    },
+    "languages": {
+      "type": "array",
+      "description": "The languages that you speak or with which you have some familiarity.",
+      "additionalItems": false,
+      "items": {
+        "$ref": "#/definitions/language"
+      }
+    },
+    "interests": {
+      "type": "array",
+      "description": "Your interests and hobbies.",
+      "additionalItems": false,
+      "items": {
+        "$ref": "#/definitions/interest"
+      }
+    },
+    "references": {
+      "type": "array",
+      "description": "Your professional references.",
+      "additionalItems": false,
+      "items": {
+        "$ref": "#/definitions/reference"
+      }
+    },
+    "projects": {
+      "type": "array",
+      "description": "Projects on which you worked, either as part of a job or independently.",
+      "additionalItems": false,
+      "items": {
+        "$ref": "#/definitions/project"
+      }
+    },
+    "meta": { "$ref": "#/definitions/meta" }
+  }
+}
