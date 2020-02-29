@@ -14,9 +14,8 @@
 
   <modules>
     <module>json-resume-core</module>
-    <module>json-resume-moshi</module>
-    <module>json-resume-markdown</module>
     <module>json-resume-jackson</module>
+    <module>json-resume-markdown</module>
   </modules>
 
   <properties>
@@ -36,8 +35,8 @@
         <version>0.1.0-SNAPSHOT</version>
       </dependency>
       <dependency>
-        <groupId>com.github.ianprime0509.jsonresume</groupId>
-        <artifactId>json-resume-moshi</artifactId>
+        <groupId>com.github.ianprime0509.json-resume</groupId>
+        <artifactId>json-resume-jackson</artifactId>
         <version>0.1.0-SNAPSHOT</version>
       </dependency>
       <dependency>
