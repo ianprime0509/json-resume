@@ -33,6 +33,18 @@ public abstract class Date {
 
   public abstract LocalDate yearMonthDay();
 
+  @Override
+  public final String toString() {
+    switch (kind()) {
+      case YEAR:
+        return year().toString();
+      case YEAR_MONTH:
+        return yearMonth().toString();
+      default:
+        return yearMonthDay().toString();
+    }
+  }
+
   public enum Kind {
     YEAR,
     YEAR_MONTH,

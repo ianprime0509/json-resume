@@ -1,0 +1,151 @@
+{
+  "basics": {
+    "name": "John Smith",
+    "label": "Programmer",
+    "email": "john.smith@example.com",
+    "phone": "555-555-5555",
+    "url": "https://example.com",
+    "summary": "I'm just a normal guy.",
+    "location": {
+      "address": "1234 Main Street",
+      "postalCode": "33323",
+      "city": "Sunrise",
+      "countryCode": "US",
+      "region": "Florida"
+    },
+    "profiles": [
+      {
+        "network": "Twitter",
+        "username": "johnsmith123",
+        "url": "https://twitter.com/johnsmith123"
+      }
+    ]
+  },
+  "work": [
+    {
+      "name": "Example Corporation",
+      "location": "Miami, FL",
+      "description": "Example creation firm",
+      "position": "Example creator",
+      "url": "https://corporation.example.com",
+      "startDate": "2020-01",
+      "summary": "I create interesting examples for corporate schemas.",
+      "highlights": [
+        "Create engaging examples for clients",
+        "Daydream for four to five hours per day",
+        "Write briefings to executives that I don't understand"
+      ]
+    },
+    {
+      "name": "Anti-Example Incorporated",
+      "location": "Hastings, NE",
+      "description": "Example destruction firm",
+      "startDate": "2019",
+      "endDate": "2020-01",
+      "summary": "I destroyed boring examples for corporate schemas.",
+      "highlights": [
+        "Destroy useless and redundant examples"
+      ]
+    }
+  ],
+  "volunteer": [
+    {
+      "organization": "Volunteers R Us",
+      "position": "Phone technician",
+      "url": "https://volunteer.example.com",
+      "startDate": "2017-06-07",
+      "endDate": "2017-06-08",
+      "summary": "I worked with people's phones."
+    }
+  ],
+  "education": [
+    {
+      "institution": "University of State University College",
+      "area": "Example creation",
+      "studyType": "Bachelor of Nothingness",
+      "startDate": "2001",
+      "endDate": "2011",
+      "gpa": "4.5",
+      "courses": [
+        "CSE101 - Computer Science for Example Creators",
+        "MATH501 - Introduction to Abstract Example Creation Theory"
+      ]
+    }
+  ],
+  "awards": [
+    {
+      "title": "Best Example Creator of the Year",
+      "date": "2018",
+      "awarder": "Myself",
+      "summary": "Received for creating the best example of the year, as judged by yours truly."
+    }
+  ],
+  "publications": [
+    {
+      "name": "Examples of Examples: an Exploration of Meta-Example Theory",
+      "publisher": "International Journal of Example Research",
+      "releaseDate": "2015-12-31",
+      "url": "https://papers.example.com/john-smith-2015",
+      "summary": "An exploration of Meta-Example Theory, with a particular focus on recursive examples."
+    }
+  ],
+  "skills": [
+    {
+      "name": "Example creation",
+      "level": "Master",
+      "keywords": ["example", "creation", "cool"]
+    },
+    {
+      "name": "Example destruction",
+      "level": "Rank amateur",
+      "keywords": ["destroy", "all", "examples"]
+    }
+  ],
+  "languages": [
+    {
+      "language": "English",
+      "fluency": "Native"
+    },
+    {
+      "language": "Java",
+      "fluency": "Conversational"
+    }
+  ],
+  "interests": [
+    {
+      "name": "Self-introspection",
+      "keywords": ["philosophy"]
+    },
+    {
+      "name": "Conversation",
+      "keywords": ["social", "soft skills"]
+    }
+  ],
+  "references": [
+    {
+      "name": "George Washington",
+      "reference": "If I were still alive, I would make John Smith my vice president."
+    },
+    {
+      "name": "John Smith",
+      "reference": "The best example creator I've ever had the pleasure of working with."
+    }
+  ],
+  "projects": [
+    {
+      "name": "The Wheel",
+      "description": "A round thing that can spin on an axel, serving as a central component of most vehicles.",
+      "highlights": [
+        "It's the most important invention, besides sliced bread",
+        "I literally invented the wheel; all you can do is re-invent it"
+      ],
+      "keywords": ["round", "motion", "car"],
+      "startDate": "2000",
+      "endDate": "2001",
+      "url": "https://wheel.example.com",
+      "roles": ["Sole inventor"],
+      "entity": "John Smith Inventions, Inc.",
+      "type": "Invention"
+    }
+  ]
+}

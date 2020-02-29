@@ -2,13 +2,21 @@ package com.github.ianprime0509.jsonresume.jsonresume.type;
 
 import static java.util.Collections.emptyList;
 
+import com.github.ianprime0509.jsonresume.jsonresume.internal.MoshiFactory;
 import com.google.auto.value.AutoValue;
+import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.JsonClass;
+import com.squareup.moshi.JsonReader;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
+import okio.Okio;
 
 @AutoValue
 @JsonClass(generateAdapter = true, generator = "avm")
 public abstract class Resume {
+  private static final JsonAdapter<Resume> adapter = MoshiFactory.getMoshi().adapter(Resume.class);
+
   Resume() {}
 
   public static Builder builder() {
@@ -24,6 +32,18 @@ public abstract class Resume {
         .references(emptyList())
         .projects(emptyList())
         .meta(Meta.EMPTY);
+  }
+
+  public static Resume fromJson(final String json) {
+    try {
+      return adapter.fromJson(json);
+    } catch (final IOException e) {
+      throw new AssertionError("Impossible IOException thrown", e);
+    }
+  }
+
+  public static Resume fromJson(final InputStream inputStream) throws IOException {
+    return adapter.fromJson(JsonReader.of(Okio.buffer(Okio.source(inputStream))));
   }
 
   public abstract Basics basics();
