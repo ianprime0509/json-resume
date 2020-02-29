@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.github.ianprime0509.jsonresume.api.Date;
+import com.github.ianprime0509.jsonresume.core.Date;
 import java.time.LocalDate;
 import java.time.Year;
 import java.time.YearMonth;

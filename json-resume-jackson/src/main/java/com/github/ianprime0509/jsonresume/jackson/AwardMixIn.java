@@ -2,8 +2,8 @@ package com.github.ianprime0509.jsonresume.jackson;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.github.ianprime0509.jsonresume.api.Award;
-import com.github.ianprime0509.jsonresume.api.Date;
+import com.github.ianprime0509.jsonresume.core.Award;
+import com.github.ianprime0509.jsonresume.core.Date;
 import javax.annotation.Nullable;
 
 @JsonDeserialize(builder = Award.Builder.class)

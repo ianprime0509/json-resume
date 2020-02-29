@@ -3,8 +3,8 @@ package com.github.ianprime0509.jsonresume.markdown;
 import static java.util.Objects.requireNonNull;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.ianprime0509.jsonresume.api.Resume;
-import com.github.ianprime0509.jsonresume.api.Section;
+import com.github.ianprime0509.jsonresume.core.Resume;
+import com.github.ianprime0509.jsonresume.core.Section;
 import com.github.ianprime0509.jsonresume.jackson.JsonResumeModule;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

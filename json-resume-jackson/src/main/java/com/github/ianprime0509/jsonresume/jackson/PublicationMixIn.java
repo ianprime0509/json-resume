@@ -2,8 +2,8 @@ package com.github.ianprime0509.jsonresume.jackson;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.github.ianprime0509.jsonresume.api.Date;
-import com.github.ianprime0509.jsonresume.api.Publication;
+import com.github.ianprime0509.jsonresume.core.Date;
+import com.github.ianprime0509.jsonresume.core.Publication;
 import java.net.URI;
 import javax.annotation.Nullable;
 

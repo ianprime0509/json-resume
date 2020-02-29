@@ -2,7 +2,7 @@ package com.github.ianprime0509.jsonresume.moshi;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import com.github.ianprime0509.jsonresume.api.Date;
+import com.github.ianprime0509.jsonresume.core.Date;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.JsonDataException;
 import com.squareup.moshi.Moshi;

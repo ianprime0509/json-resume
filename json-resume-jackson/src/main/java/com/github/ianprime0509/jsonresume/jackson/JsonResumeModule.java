@@ -2,22 +2,22 @@ package com.github.ianprime0509.jsonresume.jackson;
 
 import com.fasterxml.jackson.core.util.VersionUtil;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.github.ianprime0509.jsonresume.api.Award;
-import com.github.ianprime0509.jsonresume.api.Basics;
-import com.github.ianprime0509.jsonresume.api.Date;
-import com.github.ianprime0509.jsonresume.api.Education;
-import com.github.ianprime0509.jsonresume.api.Interest;
-import com.github.ianprime0509.jsonresume.api.Language;
-import com.github.ianprime0509.jsonresume.api.Location;
-import com.github.ianprime0509.jsonresume.api.Meta;
-import com.github.ianprime0509.jsonresume.api.Profile;
-import com.github.ianprime0509.jsonresume.api.Project;
-import com.github.ianprime0509.jsonresume.api.Publication;
-import com.github.ianprime0509.jsonresume.api.Reference;
-import com.github.ianprime0509.jsonresume.api.Resume;
-import com.github.ianprime0509.jsonresume.api.Skill;
-import com.github.ianprime0509.jsonresume.api.Volunteer;
-import com.github.ianprime0509.jsonresume.api.Work;
+import com.github.ianprime0509.jsonresume.core.Award;
+import com.github.ianprime0509.jsonresume.core.Basics;
+import com.github.ianprime0509.jsonresume.core.Date;
+import com.github.ianprime0509.jsonresume.core.Education;
+import com.github.ianprime0509.jsonresume.core.Interest;
+import com.github.ianprime0509.jsonresume.core.Language;
+import com.github.ianprime0509.jsonresume.core.Location;
+import com.github.ianprime0509.jsonresume.core.Meta;
+import com.github.ianprime0509.jsonresume.core.Profile;
+import com.github.ianprime0509.jsonresume.core.Project;
+import com.github.ianprime0509.jsonresume.core.Publication;
+import com.github.ianprime0509.jsonresume.core.Reference;
+import com.github.ianprime0509.jsonresume.core.Resume;
+import com.github.ianprime0509.jsonresume.core.Skill;
+import com.github.ianprime0509.jsonresume.core.Volunteer;
+import com.github.ianprime0509.jsonresume.core.Work;
 
 public class JsonResumeModule extends SimpleModule {
   public JsonResumeModule() {

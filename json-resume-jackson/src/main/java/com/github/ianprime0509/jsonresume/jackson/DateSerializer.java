@@ -3,7 +3,7 @@ package com.github.ianprime0509.jsonresume.jackson;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
-import com.github.ianprime0509.jsonresume.api.Date;
+import com.github.ianprime0509.jsonresume.core.Date;
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 

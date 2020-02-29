@@ -2,7 +2,7 @@ package com.github.ianprime0509.jsonresume.jackson;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.github.ianprime0509.jsonresume.api.Reference;
+import com.github.ianprime0509.jsonresume.core.Reference;
 import javax.annotation.Nullable;
 
 @JsonDeserialize(builder = Reference.Builder.class)

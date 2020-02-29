@@ -13,7 +13,7 @@
   <name>JSON resume parent POM</name>
 
   <modules>
-    <module>json-resume-api</module>
+    <module>json-resume-core</module>
     <module>json-resume-moshi</module>
     <module>json-resume-markdown</module>
     <module>json-resume-jackson</module>
@@ -32,7 +32,7 @@
     <dependencies>
       <dependency>
         <groupId>com.github.ianprime0509.jsonresume</groupId>
-        <artifactId>json-resume-api</artifactId>
+        <artifactId>json-resume-core</artifactId>
         <version>0.1.0-SNAPSHOT</version>
       </dependency>
       <dependency>
@@ -57,9 +57,9 @@
         <version>${auto-value.version}</version>
       </dependency>
       <dependency>
-        <groupId>com.ryanharter.auto.value</groupId>
-        <artifactId>auto-value-moshi-annotations</artifactId>
-        <version>${auto-value-moshi.version}</version>
+        <groupId>com.ibm.icu</groupId>
+        <artifactId>icu4j</artifactId>
+        <version>65.1</version>
       </dependency>
       <dependency>
         <groupId>com.google.code.findbugs</groupId>

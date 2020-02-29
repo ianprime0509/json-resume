@@ -3,20 +3,22 @@ package com.github.ianprime0509.jsonresume.markdown;
 import static java.util.Collections.unmodifiableList;
 import static java.util.Objects.requireNonNull;
 
-import com.github.ianprime0509.jsonresume.api.Award;
-import com.github.ianprime0509.jsonresume.api.Basics;
-import com.github.ianprime0509.jsonresume.api.Education;
-import com.github.ianprime0509.jsonresume.api.Interest;
-import com.github.ianprime0509.jsonresume.api.Language;
-import com.github.ianprime0509.jsonresume.api.Project;
-import com.github.ianprime0509.jsonresume.api.Publication;
-import com.github.ianprime0509.jsonresume.api.Reference;
-import com.github.ianprime0509.jsonresume.api.Resume;
-import com.github.ianprime0509.jsonresume.api.ResumeFormatter;
-import com.github.ianprime0509.jsonresume.api.Section;
-import com.github.ianprime0509.jsonresume.api.Skill;
-import com.github.ianprime0509.jsonresume.api.Volunteer;
-import com.github.ianprime0509.jsonresume.api.Work;
+import com.github.ianprime0509.jsonresume.core.Award;
+import com.github.ianprime0509.jsonresume.core.Basics;
+import com.github.ianprime0509.jsonresume.core.Education;
+import com.github.ianprime0509.jsonresume.core.Interest;
+import com.github.ianprime0509.jsonresume.core.Language;
+import com.github.ianprime0509.jsonresume.core.Project;
+import com.github.ianprime0509.jsonresume.core.Publication;
+import com.github.ianprime0509.jsonresume.core.Reference;
+import com.github.ianprime0509.jsonresume.core.Resume;
+import com.github.ianprime0509.jsonresume.core.ResumeFormatter;
+import com.github.ianprime0509.jsonresume.core.Section;
+import com.github.ianprime0509.jsonresume.core.Skill;
+import com.github.ianprime0509.jsonresume.core.Volunteer;
+import com.github.ianprime0509.jsonresume.core.Work;
+import com.github.ianprime0509.jsonresume.core.format.DateFormatter;
+import com.github.ianprime0509.jsonresume.core.format.DateStyle;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
@@ -30,14 +32,18 @@ import java.util.ResourceBundle;
 public final class MarkdownResumeFormatter implements ResumeFormatter {
   private final Charset charset;
   private final List<Section> sections;
+  private final Locale locale;
   private final ResourceBundle resourceBundle;
+  private final DateFormatter dateFormatter;
 
   private MarkdownResumeFormatter(final Builder builder) {
     this.charset = builder.charset;
     this.sections = unmodifiableList(new ArrayList<>(builder.sections));
+    this.locale = builder.locale;
     this.resourceBundle =
         ResourceBundle.getBundle(
-            "com.github.ianprime0509.jsonresume.api.ResumeBundle", builder.locale);
+            "com.github.ianprime0509.jsonresume.core.ResumeBundle", builder.locale);
+    this.dateFormatter = builder.dateStyle.getFormatter(builder.locale);
   }
 
   public static Builder builder() {
@@ -91,7 +97,14 @@ public final class MarkdownResumeFormatter implements ResumeFormatter {
 
   @Override
   public String toString() {
-    return "MarkdownResumeFormatter{" + "charset=" + charset + ", sections=" + sections + '}';
+    return "MarkdownResumeFormatter{"
+        + "charset="
+        + charset
+        + ", sections="
+        + sections
+        + ", locale="
+        + locale
+        + '}';
   }
 
   private void formatBasics(final MarkdownWriter writer, final Basics basics) throws IOException {
@@ -124,7 +137,9 @@ public final class MarkdownResumeFormatter implements ResumeFormatter {
     }
 
     // TODO: image, location, profiles
-    writer.ensureBlankLines(1).writeText(basics.summary());
+    if (basics.summary() != null) {
+      writer.ensureBlankLines(1).writeText(basics.summary());
+    }
   }
 
   private <T> void formatSection(
@@ -151,15 +166,10 @@ public final class MarkdownResumeFormatter implements ResumeFormatter {
     if (work.position() != null) {
       heading.append(" - ").append(work.position());
     }
-    // TODO: make date formats configurable/pretty
-    heading.append(" (").append(work.startDate());
-    if (work.endDate() != null) {
-      heading.append(" - ").append(work.endDate());
-    } else {
-      // TODO: not localized
-      heading.append(" - Present");
-    }
-    heading.append(")");
+    heading
+        .append(" (")
+        .append(dateFormatter.formatRange(work.startDate(), work.endDate()))
+        .append(")");
     writer.writeHeading(heading.toString(), 3);
 
     if (work.description() != null) {
@@ -217,6 +227,7 @@ public final class MarkdownResumeFormatter implements ResumeFormatter {
     private Charset charset = StandardCharsets.UTF_8;
     private final List<Section> sections = new ArrayList<>();
     private Locale locale = Locale.getDefault();
+    private DateStyle dateStyle = DateStyle.FULL;
 
     private Builder() {}
 
@@ -232,6 +243,11 @@ public final class MarkdownResumeFormatter implements ResumeFormatter {
 
     public Builder locale(final Locale locale) {
       this.locale = requireNonNull(locale, "locale");
+      return this;
+    }
+
+    public Builder dateStyle(final DateStyle dateStyle) {
+      this.dateStyle = requireNonNull(dateStyle, "dateStyle");
       return this;
     }
 

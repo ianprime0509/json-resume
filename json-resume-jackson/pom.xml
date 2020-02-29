@@ -15,7 +15,7 @@
   <dependencies>
     <dependency>
       <groupId>com.github.ianprime0509.json-resume</groupId>
-      <artifactId>json-resume-api</artifactId>
+      <artifactId>json-resume-core</artifactId>
       <version>0.1.0-SNAPSHOT</version>
     </dependency>
 
