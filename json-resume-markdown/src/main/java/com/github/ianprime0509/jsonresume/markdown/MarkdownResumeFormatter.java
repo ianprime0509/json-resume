@@ -1,5 +1,6 @@
 package com.github.ianprime0509.jsonresume.markdown;
 
+import static com.github.ianprime0509.jsonresume.markdown.MoreObjects.requireNonNullElse;
 import static java.util.Collections.unmodifiableList;
 import static java.util.Objects.requireNonNull;
 
@@ -8,6 +9,7 @@ import com.github.ianprime0509.jsonresume.core.Basics;
 import com.github.ianprime0509.jsonresume.core.Education;
 import com.github.ianprime0509.jsonresume.core.Interest;
 import com.github.ianprime0509.jsonresume.core.Language;
+import com.github.ianprime0509.jsonresume.core.Profile;
 import com.github.ianprime0509.jsonresume.core.Project;
 import com.github.ianprime0509.jsonresume.core.Publication;
 import com.github.ianprime0509.jsonresume.core.Reference;
@@ -23,6 +25,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -34,6 +37,7 @@ public final class MarkdownResumeFormatter implements ResumeFormatter {
   private final List<Section> sections;
   private final Locale locale;
   private final ResourceBundle resourceBundle;
+  private final ResourceBundle markdownResourceBundle;
   private final DateFormatter dateFormatter;
 
   private MarkdownResumeFormatter(final Builder builder) {
@@ -43,6 +47,9 @@ public final class MarkdownResumeFormatter implements ResumeFormatter {
     this.resourceBundle =
         ResourceBundle.getBundle(
             "com.github.ianprime0509.jsonresume.core.ResumeBundle", builder.locale);
+    this.markdownResourceBundle =
+        ResourceBundle.getBundle(
+            "com.github.ianprime0509.jsonresume.markdown.MarkdownBundle", builder.locale);
     this.dateFormatter = builder.dateStyle.getFormatter(builder.locale);
   }
 
@@ -114,6 +121,28 @@ public final class MarkdownResumeFormatter implements ResumeFormatter {
     }
     writer.writeHeading(heading.toString(), 1).ensureBlankLines(1);
 
+    if (basics.image() != null) {
+      writer
+          .writeImage(markdownResourceBundle.getString("basics.image.alt-text"), basics.image())
+          .ensureBlankLines(1);
+    }
+
+    if (basics.location() != null) {
+      final String locationFormat = markdownResourceBundle.getString("basics.location.format");
+      final String formattedLocation =
+          MessageFormat.format(
+              locationFormat,
+              requireNonNullElse(basics.location().address(), ""),
+              requireNonNullElse(basics.location().postalCode(), ""),
+              requireNonNullElse(basics.location().city(), ""),
+              requireNonNullElse(basics.location().countryCode(), ""),
+              requireNonNullElse(basics.location().region(), ""));
+      for (final String line : formattedLocation.split("\n")) {
+        writer.writeText(line).writeLineBreak(true);
+      }
+      writer.ensureBlankLines(1);
+    }
+
     if (basics.email() != null) {
       writer
           .writeText("*" + resourceBundle.getString("basics.email") + "*:")
@@ -135,8 +164,15 @@ public final class MarkdownResumeFormatter implements ResumeFormatter {
           .writeLink(basics.url().toString())
           .writeLineBreak(true);
     }
+    for (final Profile profile : basics.profiles()) {
+      writer.writeText("*" + profile.network() + "*:").writeSpace();
+      if (profile.url() != null) {
+        writer.writeLink(profile.username(), profile.network());
+      } else {
+        writer.writeText(profile.username());
+      }
+    }
 
-    // TODO: image, location, profiles
     if (basics.summary() != null) {
       writer.ensureBlankLines(1).writeText(basics.summary());
     }

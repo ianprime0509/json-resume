@@ -66,6 +66,12 @@ final class MarkdownWriter implements Closeable, Flushable {
     return writeText(heading.toString(), false).writeLineBreak();
   }
 
+  public MarkdownWriter writeImage(final String altText, final String url) throws IOException {
+    requireNonNull(altText, "altText");
+    requireNonNull(url, "url");
+    return writeText("!").writeLink(altText, url);
+  }
+
   public MarkdownWriter writeLineBreak() throws IOException {
     return writeLineBreak(false);
   }
@@ -81,10 +87,13 @@ final class MarkdownWriter implements Closeable, Flushable {
   }
 
   public MarkdownWriter writeLink(final String destination) throws IOException {
+    requireNonNull(destination, "destination");
     return writeText('<' + destination + '>', false);
   }
 
   public MarkdownWriter writeLink(final String label, final String destination) throws IOException {
+    requireNonNull(label, "label");
+    requireNonNull(destination, "destination");
     return writeText('[' + label + "](" + destination + ')', false);
   }
 

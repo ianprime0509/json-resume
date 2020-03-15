@@ -2,6 +2,7 @@
   "basics": {
     "name": "John Smith",
     "label": "Programmer",
+    "image": "https://example.com/example.png",
     "email": "john.smith@example.com",
     "phone": "555-555-5555",
     "url": "https://example.com",
