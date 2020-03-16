@@ -1,6 +1,7 @@
 package com.github.ianprime0509.jsonresume.markdown;
 
 import static com.github.ianprime0509.jsonresume.markdown.MoreObjects.requireNonNullElse;
+import static java.util.Collections.singletonList;
 import static java.util.Collections.unmodifiableList;
 import static java.util.Objects.requireNonNull;
 
@@ -82,16 +83,32 @@ public final class MarkdownResumeFormatter implements ResumeFormatter {
               writer, Section.PUBLICATIONS, resume.publications(), this::formatPublication);
           break;
         case SKILLS:
-          formatSection(writer, Section.SKILLS, resume.skills(), this::formatSkill);
+          formatSection(
+              writer,
+              Section.SKILLS,
+              resume.skills(),
+              SectionItemFormatter.tight(this::formatSkill));
           break;
         case LANGUAGES:
-          formatSection(writer, Section.LANGUAGES, resume.languages(), this::formatLanguage);
+          formatSection(
+              writer,
+              Section.LANGUAGES,
+              resume.languages(),
+              SectionItemFormatter.tight(this::formatLanguage));
           break;
         case INTERESTS:
-          formatSection(writer, Section.INTERESTS, resume.interests(), this::formatInterest);
+          formatSection(
+              writer,
+              Section.INTERESTS,
+              resume.interests(),
+              SectionItemFormatter.tight(this::formatInterest));
           break;
         case REFERENCES:
-          formatSection(writer, Section.REFERENCES, resume.references(), this::formatReference);
+          formatSection(
+              writer,
+              Section.REFERENCES,
+              resume.references(),
+              SectionItemFormatter.tight(this::formatReference));
           break;
         case PROJECTS:
           formatSection(writer, Section.PROJECTS, resume.projects(), this::formatProject);
@@ -167,7 +184,7 @@ public final class MarkdownResumeFormatter implements ResumeFormatter {
     for (final Profile profile : basics.profiles()) {
       writer.writeText("*" + profile.network() + "*:").writeSpace();
       if (profile.url() != null) {
-        writer.writeLink(profile.username(), profile.network());
+        writer.writeLink(profile.username(), profile.url().toString());
       } else {
         writer.writeText(profile.username());
       }
@@ -190,9 +207,13 @@ public final class MarkdownResumeFormatter implements ResumeFormatter {
 
     writer
         .ensureBlankLines(1)
-        .writeHeading(resourceBundle.getString(section.name().toLowerCase()), 2);
+        .writeHeading(resourceBundle.getString(section.name().toLowerCase()), 2)
+        .ensureBlankLines(1);
+
     for (final T sectionItem : sectionItems) {
-      writer.ensureBlankLines(1);
+      if (!formatter.isTight()) {
+        writer.ensureBlankLines(1);
+      }
       formatter.format(writer, sectionItem);
     }
   }
@@ -209,7 +230,7 @@ public final class MarkdownResumeFormatter implements ResumeFormatter {
     writer.writeHeading(heading.toString(), 3);
 
     if (work.description() != null) {
-      writer.ensureBlankLines(1).writeParagraph("**" + work.description() + "**");
+      writer.ensureBlankLines(1).writeParagraph("*" + work.description() + "*");
     }
     if (work.summary() != null) {
       writer.ensureBlankLines(1).writeParagraph(work.summary());
@@ -218,14 +239,14 @@ public final class MarkdownResumeFormatter implements ResumeFormatter {
     writer.ensureBlankLines(1);
     if (work.location() != null) {
       writer
-          .writeText("*" + resourceBundle.getString("work.location") + "*:")
+          .writeText("**" + resourceBundle.getString("work.location") + "**:")
           .writeSpace()
           .writeText(work.location())
           .writeLineBreak(true);
     }
     if (work.url() != null) {
       writer
-          .writeText("*" + resourceBundle.getString("work.url") + "*:")
+          .writeText("**" + resourceBundle.getString("work.url") + "**:")
           .writeSpace()
           .writeLink(work.url().toString())
           .writeLineBreak(true);
@@ -235,29 +256,175 @@ public final class MarkdownResumeFormatter implements ResumeFormatter {
   }
 
   private void formatVolunteer(final MarkdownWriter writer, final Volunteer volunteer)
-      throws IOException {}
+      throws IOException {
+    final StringBuilder heading = new StringBuilder(volunteer.organization());
+    if (volunteer.position() != null) {
+      heading.append(" - ").append(volunteer.position());
+    }
+    heading
+        .append(" (")
+        .append(dateFormatter.formatRange(volunteer.startDate(), volunteer.endDate()))
+        .append(")");
+    writer.writeHeading(heading.toString(), 3);
+
+    if (volunteer.summary() != null) {
+      writer.ensureBlankLines(1).writeParagraph(volunteer.summary());
+    }
+
+    writer.ensureBlankLines(1);
+    if (volunteer.url() != null) {
+      writer
+          .writeText("**" + resourceBundle.getString("volunteer.url") + "**:")
+          .writeSpace()
+          .writeLink(volunteer.url().toString())
+          .writeLineBreak(true);
+    }
+
+    writer.ensureBlankLines(1).writeList(volunteer.highlights());
+  }
 
   private void formatEducation(final MarkdownWriter writer, final Education education)
-      throws IOException {}
+      throws IOException {
+    final String heading =
+        education.institution()
+            + " ("
+            + dateFormatter.formatRange(education.startDate(), education.endDate())
+            + ")";
+    writer.writeHeading(heading, 3);
 
-  private void formatAward(final MarkdownWriter writer, final Award award) throws IOException {}
+    final StringBuilder degree = new StringBuilder();
+    if (education.studyType() != null) {
+      degree.append(education.studyType());
+    }
+    if (education.area() != null) {
+      if (degree.length() > 0) {
+        degree.append(": ");
+      }
+      degree.append(education.area());
+    }
+    if (degree.length() > 0) {
+      writer.ensureBlankLines(1).writeParagraph(degree.toString());
+    }
+
+    writer.ensureBlankLines(1);
+    if (education.gpa() != null) {
+      writer
+          .writeText("**" + resourceBundle.getString("education.gpa") + "**:")
+          .writeSpace()
+          .writeText(education.gpa())
+          .writeLineBreak(true);
+    }
+
+    writer.ensureBlankLines(1).writeList(education.courses());
+  }
+
+  private void formatAward(final MarkdownWriter writer, final Award award) throws IOException {
+    final StringBuilder heading = new StringBuilder(award.title());
+    if (award.awarder() != null) {
+      heading.append(" - ").append(award.awarder());
+    }
+    if (award.date() != null) {
+      heading.append(" (").append(dateFormatter.format(award.date())).append(")");
+    }
+    writer.writeHeading(heading.toString(), 3);
+
+    if (award.summary() != null) {
+      writer.ensureBlankLines(1).writeParagraph(award.summary());
+    }
+  }
 
   private void formatPublication(final MarkdownWriter writer, final Publication publication)
-      throws IOException {}
+      throws IOException {
+    final StringBuilder heading = new StringBuilder(publication.name());
+    if (publication.publisher() != null) {
+      heading.append(" - ").append(publication.publisher());
+    }
+    if (publication.releaseDate() != null) {
+      heading.append(" (").append(dateFormatter.format(publication.releaseDate())).append(")");
+    }
+    writer.writeHeading(heading.toString(), 3);
 
-  private void formatSkill(final MarkdownWriter writer, final Skill skill) throws IOException {}
+    if (publication.summary() != null) {
+      writer.ensureBlankLines(1).writeParagraph(publication.summary());
+    }
+
+    writer.ensureBlankLines(1);
+    if (publication.url() != null) {
+      writer
+          .writeText("**" + resourceBundle.getString("publications.url") + "**:")
+          .writeSpace()
+          .writeLink(publication.url().toString());
+    }
+  }
+
+  private void formatSkill(final MarkdownWriter writer, final Skill skill) throws IOException {
+    final StringBuilder formattedSkill = new StringBuilder(skill.name());
+    if (skill.level() != null) {
+      formattedSkill.append(" - ").append(skill.level());
+    }
+    writer.writeList(singletonList(formattedSkill.toString()));
+  }
 
   private void formatLanguage(final MarkdownWriter writer, final Language language)
-      throws IOException {}
+      throws IOException {
+    final StringBuilder formattedLanguage = new StringBuilder(language.language());
+    if (language.fluency() != null) {
+      formattedLanguage.append(" - ").append(language.fluency());
+    }
+    writer.writeList(singletonList(formattedLanguage.toString()));
+  }
 
   private void formatInterest(final MarkdownWriter writer, final Interest interest)
-      throws IOException {}
+      throws IOException {
+    writer.writeList(singletonList(interest.name()));
+  }
 
   private void formatReference(final MarkdownWriter writer, final Reference reference)
-      throws IOException {}
+      throws IOException {
+    final StringBuilder formattedReference = new StringBuilder(reference.name());
+    if (reference.reference() != null) {
+      formattedReference.append(" - ").append(reference.reference());
+    }
+    writer.writeList(singletonList(formattedReference.toString()));
+  }
 
   private void formatProject(final MarkdownWriter writer, final Project project)
-      throws IOException {}
+      throws IOException {
+    final StringBuilder heading = new StringBuilder(project.name());
+    if (!project.roles().isEmpty()) {
+      heading.append(" - ").append(String.join(", ", project.roles()));
+    }
+    if (project.startDate() != null) {
+      heading
+          .append(" (")
+          .append(dateFormatter.formatRange(project.startDate(), project.endDate()))
+          .append(")");
+    }
+    writer.writeHeading(heading.toString(), 3);
+
+    if (project.description() != null) {
+      writer.ensureBlankLines(1).writeParagraph(project.description());
+    }
+
+    writer.ensureBlankLines(1);
+    if (project.entity() != null) {
+      writer
+          .writeText("**" + resourceBundle.getString("projects.entity") + "**:")
+          .writeSpace()
+          .writeText(project.entity())
+          .writeLineBreak(true);
+    }
+    if (project.url() != null) {
+      writer
+          .writeText("**" + resourceBundle.getString("projects.url") + "**:")
+          .writeSpace()
+          .writeText(project.url().toString())
+          .writeLineBreak(true);
+    }
+
+    writer.ensureBlankLines(1).writeList(project.highlights());
+    // type is deliberately omitted from the output, since I don't see any good place to put it
+  }
 
   public static final class Builder {
     private Charset charset = StandardCharsets.UTF_8;
@@ -293,6 +460,24 @@ public final class MarkdownResumeFormatter implements ResumeFormatter {
   }
 
   private interface SectionItemFormatter<T> {
+    static <T> SectionItemFormatter<T> tight(final SectionItemFormatter<? super T> formatter) {
+      return new SectionItemFormatter<T>() {
+        @Override
+        public void format(final MarkdownWriter writer, final T sectionItem) throws IOException {
+          formatter.format(writer, sectionItem);
+        }
+
+        @Override
+        public boolean isTight() {
+          return true;
+        }
+      };
+    }
+
     void format(MarkdownWriter writer, T sectionItem) throws IOException;
+
+    default boolean isTight() {
+      return false;
+    }
   }
 }

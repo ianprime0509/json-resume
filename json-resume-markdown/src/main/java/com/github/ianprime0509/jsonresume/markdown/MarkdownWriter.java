@@ -100,7 +100,7 @@ final class MarkdownWriter implements Closeable, Flushable {
   public MarkdownWriter writeList(final List<String> items) throws IOException {
     ensureBlankLines(0);
     for (final String item : items) {
-      writeText("-").writeSpace().writeText(item).writeLineBreak();
+      writeText("-").writeSpace().writeText(item, true, 2).writeLineBreak();
     }
     return this;
   }
@@ -132,7 +132,6 @@ final class MarkdownWriter implements Closeable, Flushable {
 
     boolean firstWord = true;
     for (final String word : text.split("\\p{IsWhite_Space}")) {
-      consecutiveLineBreaks = 0;
       // This isn't entirely correct, but it's close enough I guess
       if (wrap && column + word.length() > wrapColumn) {
         writeLineBreak();
@@ -145,6 +144,7 @@ final class MarkdownWriter implements Closeable, Flushable {
       writer.write(word);
       column += word.length();
       firstWord = false;
+      consecutiveLineBreaks = 0;
     }
     return this;
   }
