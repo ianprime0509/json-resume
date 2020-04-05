@@ -14,7 +14,10 @@
 
   <modules>
     <module>json-resume-core</module>
+
     <module>json-resume-jackson</module>
+
+    <module>json-resume-context</module>
     <module>json-resume-markdown</module>
   </modules>
 

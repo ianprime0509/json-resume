@@ -1,4 +1,4 @@
-package com.github.ianprime0509.jsonresume.markdown;
+package com.github.ianprime0509.jsonresume.context;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -16,8 +16,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-@DisplayName("MarkdownResumeFormatter")
-class MarkdownResumeFormatterTest {
+@DisplayName("ContextResumeFormatter")
+class ContextResumeFormatterTest {
   private ObjectMapper objectMapper;
 
   @BeforeEach
@@ -28,12 +28,12 @@ class MarkdownResumeFormatterTest {
   @DisplayName("format")
   @Nested
   class Format {
-    private MarkdownResumeFormatter formatter;
+    private ContextResumeFormatter formatter;
 
     @BeforeEach
     void setUpFormatter() {
       formatter =
-          MarkdownResumeFormatter.builder()
+          ContextResumeFormatter.builder()
               .locale(Locale.US)
               .addSection(Section.WORK)
               .addSection(Section.VOLUNTEER)
@@ -52,7 +52,7 @@ class MarkdownResumeFormatterTest {
     @Test
     void sampleComplete() throws IOException {
       final Resume resume = readResume("sample-complete.json");
-      assertThat(format(resume)).isEqualTo(readFile("sample-complete.md"));
+      assertThat(format(resume)).isEqualTo(readFile("sample-complete.tex"));
     }
 
     private String format(final Resume resume) throws IOException {
@@ -63,7 +63,7 @@ class MarkdownResumeFormatterTest {
 
     private String readFile(final String name) throws IOException {
       try (final InputStream inputStream =
-          MarkdownResumeFormatterTest.class.getResourceAsStream(name)) {
+          ContextResumeFormatterTest.class.getResourceAsStream(name)) {
         final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         final byte[] buffer = new byte[8096];
         int read;

@@ -1,0 +1,89 @@
+% Common resume preamble
+% All variables used are in the resume namespace.
+% TODO: maybe make the margin configurable?
+\setuplayout[
+  backspace=1in,
+  cutspace=1in,
+  topspace=1in,
+  bottomspace=1in,
+  margin=0pt,
+  header=0pt,
+  footer=0pt,
+  width=fit,
+  height=fit]
+\setuppagenumbering[location=]
+\setupbodyfont[termes]
+\switchtobodyfont[10pt]
+\setupinteraction[state=start,color=blank,style=normal]
+\placebookmarks[Section,SectionItem][force=yes]
+
+% Fancy section item headers ("quad-headers")
+\startluacode
+  userdata = userdata or {}
+
+  function userdata.quadheader(t1, t2, t3, t4)
+    context([[\vbox{]])
+    context([[\hbox to \textwidth {\bf %s \wordright{%s}}]], t1, t2)
+    if #t3 > 0 or #t4 > 0 then
+      context([[\hbox to \textwidth {\tf\em %s \wordright{%s}}]], t3, t4)
+    end
+    context("}")
+  end
+\stopluacode
+
+\define[4]\QuadHeader{\ctxlua{
+  userdata.quadheader([=[#1]=], [=[#2]=], [=[#3]=], [=[#4]=])}}
+
+% Utility commands
+\define[2]\URL{{\useurl[url][#1][][#2]\from[url]}}
+\define[1]\Email{\URL{mailto:#1}{#1}}
+\define[1]\Phone{\URL{tel:#1}{#1}}
+\define[1]\DirectURL{\URL{#1}{#1}}
+
+% Section type definitions
+
+% Resume header
+% Variables used:
+% name (required)
+% label
+\definestartstop[Header][
+  before={\startalignment[center]
+    {\bfc\getvariable{resume}{name}}
+    \doifnotempty{\getvariable{resume}{label}}
+      {\blank[halfline]{\bfa\getvariable{resume}{label}}}},
+  after={\stopalignment\blank[2*big]}]
+
+% Header details (e.g. phone, email, address)
+\definestartstop[HeaderDetails][
+  before={\begingroup
+    \switchtobodyfont[8pt]
+    \blank[quarterline]},
+  after={\endgroup}]
+
+% Summary
+\definestartstop[Summary][
+  before={\begingroup
+    \switchtobodyfont[9pt]
+    \blank[halfline]},
+  after={\endgroup}]
+
+% Section
+\definehead[Section][subject][after={\hrule \blank[halfline]},style=\bfa]
+
+% Section item
+% Structure variables:
+% info1, info2, info3 - quad-header information
+\define[2]\SectionItemHeading
+  {\QuadHeader{#2}
+    {\structureuservariable{info1}}
+    {\structureuservariable{info2}}
+    {\structureuservariable{info3}}}
+\definehead[SectionItem][subsubject][
+  command=\SectionItemHeading,
+  before={\blank[halfline]},
+  after={},
+  style=\bf]
+
+% Highlights
+\defineitemgroup[Highlights]
+\setupitemgroup[Highlights][each][2,packed][before={},after={}]

@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-/** A {@link ResumeFormatter} that formats resumes as a Markdown documents. */
+/** A {@link ResumeFormatter} that formats resumes as Markdown documents. */
 public final class MarkdownResumeFormatter implements ResumeFormatter {
   private final Charset charset;
   private final List<Section> sections;
@@ -136,12 +136,12 @@ public final class MarkdownResumeFormatter implements ResumeFormatter {
     if (basics.label() != null) {
       heading.append(" - ").append(basics.label());
     }
-    writer.writeHeading(heading.toString(), 1).ensureBlankLines(1);
+    writer.writeHeading(heading.toString(), 1);
+    writer.ensureBlankLines(1);
 
     if (basics.image() != null) {
-      writer
-          .writeImage(markdownResourceBundle.getString("basics.image.alt-text"), basics.image())
-          .ensureBlankLines(1);
+      writer.writeImage(markdownResourceBundle.getString("basics.image.alt-text"), basics.image());
+      writer.ensureBlankLines(1);
     }
 
     if (basics.location() != null) {
@@ -155,34 +155,33 @@ public final class MarkdownResumeFormatter implements ResumeFormatter {
               requireNonNullElse(basics.location().countryCode(), ""),
               requireNonNullElse(basics.location().region(), ""));
       for (final String line : formattedLocation.split("\n")) {
-        writer.writeText(line).writeLineBreak(true);
+        writer.writeText(line);
+        writer.writeLineBreak(true);
       }
       writer.ensureBlankLines(1);
     }
 
     if (basics.email() != null) {
-      writer
-          .writeText("*" + resourceBundle.getString("basics.email") + "*:")
-          .writeSpace()
-          .writeLink(basics.email())
-          .writeLineBreak(true);
+      writer.writeText("*" + resourceBundle.getString("basics.email") + "*:");
+      writer.writeSpace();
+      writer.writeLink(basics.email());
+      writer.writeLineBreak(true);
     }
     if (basics.phone() != null) {
-      writer
-          .writeText("*" + resourceBundle.getString("basics.phone") + "*:")
-          .writeSpace()
-          .writeLink(basics.phone(), "tel:" + basics.phone().replaceAll("[^0-9+]", ""))
-          .writeLineBreak(true);
+      writer.writeText("*" + resourceBundle.getString("basics.phone") + "*:");
+      writer.writeSpace();
+      writer.writeLink(basics.phone(), "tel:" + basics.phone().replaceAll("[^0-9+]", ""));
+      writer.writeLineBreak(true);
     }
     if (basics.url() != null) {
-      writer
-          .writeText("*" + resourceBundle.getString("basics.url") + "*:")
-          .writeSpace()
-          .writeLink(basics.url().toString())
-          .writeLineBreak(true);
+      writer.writeText("*" + resourceBundle.getString("basics.url") + "*:");
+      writer.writeSpace();
+      writer.writeLink(basics.url().toString());
+      writer.writeLineBreak(true);
     }
     for (final Profile profile : basics.profiles()) {
-      writer.writeText("*" + profile.network() + "*:").writeSpace();
+      writer.writeText("*" + profile.network() + "*:");
+      writer.writeSpace();
       if (profile.url() != null) {
         writer.writeLink(profile.username(), profile.url().toString());
       } else {
@@ -191,7 +190,8 @@ public final class MarkdownResumeFormatter implements ResumeFormatter {
     }
 
     if (basics.summary() != null) {
-      writer.ensureBlankLines(1).writeText(basics.summary());
+      writer.ensureBlankLines(1);
+      writer.writeText(basics.summary());
     }
   }
 
@@ -205,10 +205,9 @@ public final class MarkdownResumeFormatter implements ResumeFormatter {
       return;
     }
 
-    writer
-        .ensureBlankLines(1)
-        .writeHeading(resourceBundle.getString(section.name().toLowerCase()), 2)
-        .ensureBlankLines(1);
+    writer.ensureBlankLines(1);
+    writer.writeHeading(resourceBundle.getString(section.name().toLowerCase()), 2);
+    writer.ensureBlankLines(1);
 
     for (final T sectionItem : sectionItems) {
       if (!formatter.isTight()) {
@@ -230,29 +229,30 @@ public final class MarkdownResumeFormatter implements ResumeFormatter {
     writer.writeHeading(heading.toString(), 3);
 
     if (work.description() != null) {
-      writer.ensureBlankLines(1).writeParagraph("*" + work.description() + "*");
+      writer.ensureBlankLines(1);
+      writer.writeParagraph("*" + work.description() + "*");
     }
     if (work.summary() != null) {
-      writer.ensureBlankLines(1).writeParagraph(work.summary());
+      writer.ensureBlankLines(1);
+      writer.writeParagraph(work.summary());
     }
 
     writer.ensureBlankLines(1);
     if (work.location() != null) {
-      writer
-          .writeText("**" + resourceBundle.getString("work.location") + "**:")
-          .writeSpace()
-          .writeText(work.location())
-          .writeLineBreak(true);
+      writer.writeText("**" + resourceBundle.getString("work.location") + "**:");
+      writer.writeSpace();
+      writer.writeText(work.location());
+      writer.writeLineBreak(true);
     }
     if (work.url() != null) {
-      writer
-          .writeText("**" + resourceBundle.getString("work.url") + "**:")
-          .writeSpace()
-          .writeLink(work.url().toString())
-          .writeLineBreak(true);
+      writer.writeText("**" + resourceBundle.getString("work.url") + "**:");
+      writer.writeSpace();
+      writer.writeLink(work.url().toString());
+      writer.writeLineBreak(true);
     }
 
-    writer.ensureBlankLines(1).writeList(work.highlights());
+    writer.ensureBlankLines(1);
+    writer.writeList(work.highlights());
   }
 
   private void formatVolunteer(final MarkdownWriter writer, final Volunteer volunteer)
@@ -268,19 +268,20 @@ public final class MarkdownResumeFormatter implements ResumeFormatter {
     writer.writeHeading(heading.toString(), 3);
 
     if (volunteer.summary() != null) {
-      writer.ensureBlankLines(1).writeParagraph(volunteer.summary());
+      writer.ensureBlankLines(1);
+      writer.writeParagraph(volunteer.summary());
     }
 
     writer.ensureBlankLines(1);
     if (volunteer.url() != null) {
-      writer
-          .writeText("**" + resourceBundle.getString("volunteer.url") + "**:")
-          .writeSpace()
-          .writeLink(volunteer.url().toString())
-          .writeLineBreak(true);
+      writer.writeText("**" + resourceBundle.getString("volunteer.url") + "**:");
+      writer.writeSpace();
+      writer.writeLink(volunteer.url().toString());
+      writer.writeLineBreak(true);
     }
 
-    writer.ensureBlankLines(1).writeList(volunteer.highlights());
+    writer.ensureBlankLines(1);
+    writer.writeList(volunteer.highlights());
   }
 
   private void formatEducation(final MarkdownWriter writer, final Education education)
@@ -303,19 +304,20 @@ public final class MarkdownResumeFormatter implements ResumeFormatter {
       degree.append(education.area());
     }
     if (degree.length() > 0) {
-      writer.ensureBlankLines(1).writeParagraph(degree.toString());
+      writer.ensureBlankLines(1);
+      writer.writeParagraph(degree.toString());
     }
 
     writer.ensureBlankLines(1);
     if (education.gpa() != null) {
-      writer
-          .writeText("**" + resourceBundle.getString("education.gpa") + "**:")
-          .writeSpace()
-          .writeText(education.gpa())
-          .writeLineBreak(true);
+      writer.writeText("**" + resourceBundle.getString("education.gpa") + "**:");
+      writer.writeSpace();
+      writer.writeText(education.gpa());
+      writer.writeLineBreak(true);
     }
 
-    writer.ensureBlankLines(1).writeList(education.courses());
+    writer.ensureBlankLines(1);
+    writer.writeList(education.courses());
   }
 
   private void formatAward(final MarkdownWriter writer, final Award award) throws IOException {
@@ -329,7 +331,8 @@ public final class MarkdownResumeFormatter implements ResumeFormatter {
     writer.writeHeading(heading.toString(), 3);
 
     if (award.summary() != null) {
-      writer.ensureBlankLines(1).writeParagraph(award.summary());
+      writer.ensureBlankLines(1);
+      writer.writeParagraph(award.summary());
     }
   }
 
@@ -345,15 +348,15 @@ public final class MarkdownResumeFormatter implements ResumeFormatter {
     writer.writeHeading(heading.toString(), 3);
 
     if (publication.summary() != null) {
-      writer.ensureBlankLines(1).writeParagraph(publication.summary());
+      writer.ensureBlankLines(1);
+      writer.writeParagraph(publication.summary());
     }
 
     writer.ensureBlankLines(1);
     if (publication.url() != null) {
-      writer
-          .writeText("**" + resourceBundle.getString("publications.url") + "**:")
-          .writeSpace()
-          .writeLink(publication.url().toString());
+      writer.writeText("**" + resourceBundle.getString("publications.url") + "**:");
+      writer.writeSpace();
+      writer.writeLink(publication.url().toString());
     }
   }
 
@@ -403,26 +406,26 @@ public final class MarkdownResumeFormatter implements ResumeFormatter {
     writer.writeHeading(heading.toString(), 3);
 
     if (project.description() != null) {
-      writer.ensureBlankLines(1).writeParagraph(project.description());
+      writer.ensureBlankLines(1);
+      writer.writeParagraph(project.description());
     }
 
     writer.ensureBlankLines(1);
     if (project.entity() != null) {
-      writer
-          .writeText("**" + resourceBundle.getString("projects.entity") + "**:")
-          .writeSpace()
-          .writeText(project.entity())
-          .writeLineBreak(true);
+      writer.writeText("**" + resourceBundle.getString("projects.entity") + "**:");
+      writer.writeSpace();
+      writer.writeText(project.entity());
+      writer.writeLineBreak(true);
     }
     if (project.url() != null) {
-      writer
-          .writeText("**" + resourceBundle.getString("projects.url") + "**:")
-          .writeSpace()
-          .writeText(project.url().toString())
-          .writeLineBreak(true);
+      writer.writeText("**" + resourceBundle.getString("projects.url") + "**:");
+      writer.writeSpace();
+      writer.writeText(project.url().toString());
+      writer.writeLineBreak(true);
     }
 
-    writer.ensureBlankLines(1).writeList(project.highlights());
+    writer.ensureBlankLines(1);
+    writer.writeList(project.highlights());
     // type is deliberately omitted from the output, since I don't see any good place to put it
   }
 

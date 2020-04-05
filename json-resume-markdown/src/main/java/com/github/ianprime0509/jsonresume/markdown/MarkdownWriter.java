@@ -2,8 +2,7 @@ package com.github.ianprime0509.jsonresume.markdown;
 
 import static java.util.Objects.requireNonNull;
 
-import java.io.Closeable;
-import java.io.Flushable;
+import com.github.ianprime0509.jsonresume.core.text.TextWriter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -11,47 +10,20 @@ import java.io.Writer;
 import java.nio.charset.Charset;
 import java.util.List;
 
-final class MarkdownWriter implements Closeable, Flushable {
-  private final Writer writer;
-  private final int wrapColumn = 80;
-  private int column = 1;
-  private int consecutiveLineBreaks = 0;
-
+final class MarkdownWriter extends TextWriter {
   private MarkdownWriter(final Writer writer) {
-    this.writer = writer;
+    super(writer, 80);
   }
 
-  public static MarkdownWriter create(final Writer writer) {
+  static MarkdownWriter create(final Writer writer) {
     return new MarkdownWriter(writer);
   }
 
-  public static MarkdownWriter create(final OutputStream outputStream, final Charset charset) {
+  static MarkdownWriter create(final OutputStream outputStream, final Charset charset) {
     return create(new OutputStreamWriter(outputStream, charset));
   }
 
-  @Override
-  public void close() throws IOException {
-    writer.close();
-  }
-
-  @Override
-  public void flush() throws IOException {
-    writer.flush();
-  }
-
-  public MarkdownWriter ensureBlankLines(final int nLines) throws IOException {
-    if (nLines < 0) {
-      throw new IllegalArgumentException("nLines must be non-negative");
-    }
-
-    final int neededLineBreaks = nLines - consecutiveLineBreaks + 1;
-    for (int i = 0; i < neededLineBreaks; i++) {
-      writeLineBreak();
-    }
-    return this;
-  }
-
-  public MarkdownWriter writeHeading(final String text, final int level) throws IOException {
+  public void writeHeading(final String text, final int level) throws IOException {
     requireNonNull(text, "text");
     if (level < 1 || level > 6) {
       throw new IllegalArgumentException("level must be between 1 and 6");
@@ -63,89 +35,53 @@ final class MarkdownWriter implements Closeable, Flushable {
     }
     heading.append(' ');
     heading.append(text);
-    return writeText(heading.toString(), false).writeLineBreak();
+    writeText(heading.toString(), false);
+    writeLineBreak();
   }
 
-  public MarkdownWriter writeImage(final String altText, final String url) throws IOException {
+  public void writeImage(final String altText, final String url) throws IOException {
     requireNonNull(altText, "altText");
     requireNonNull(url, "url");
-    return writeText("!").writeLink(altText, url);
+    writeText("!");
+    writeLink(altText, url);
   }
 
-  public MarkdownWriter writeLineBreak() throws IOException {
-    return writeLineBreak(false);
-  }
-
-  public MarkdownWriter writeLineBreak(final boolean hard) throws IOException {
+  public void writeLineBreak(final boolean hard) throws IOException {
     if (hard) {
-      writer.write("  ");
+      writeSpace();
+      writeSpace();
     }
-    writer.write('\n');
-    column = 1;
-    consecutiveLineBreaks++;
-    return this;
+    writeLineBreak();
   }
 
-  public MarkdownWriter writeLink(final String destination) throws IOException {
+  public void writeLink(final String destination) throws IOException {
     requireNonNull(destination, "destination");
-    return writeText('<' + destination + '>', false);
+    writeText('<' + destination + '>', false);
   }
 
-  public MarkdownWriter writeLink(final String label, final String destination) throws IOException {
+  public void writeLink(final String label, final String destination) throws IOException {
     requireNonNull(label, "label");
     requireNonNull(destination, "destination");
-    return writeText('[' + label + "](" + destination + ')', false);
+    writeText('[' + label + "](" + destination + ')', false);
   }
 
-  public MarkdownWriter writeList(final List<String> items) throws IOException {
+  public void writeList(final List<String> items) throws IOException {
     ensureBlankLines(0);
     for (final String item : items) {
-      writeText("-").writeSpace().writeText(item, true, 2).writeLineBreak();
+      writeText("-");
+      writeSpace();
+      writeText(item, true, 2);
+      writeLineBreak();
     }
-    return this;
   }
 
-  public MarkdownWriter writeParagraph(final String text) throws IOException {
-    return writeText(text).ensureBlankLines(1);
+  public void writeParagraph(final String text) throws IOException {
+    writeText(text);
+    ensureBlankLines(1);
   }
 
-  public MarkdownWriter writeSpace() throws IOException {
-    writer.write(' ');
-    column++;
-    return this;
-  }
-
-  public MarkdownWriter writeText(final String text) throws IOException {
-    return writeText(text, true);
-  }
-
-  public MarkdownWriter writeText(final String text, final boolean wrap) throws IOException {
-    return writeText(text, wrap, 0);
-  }
-
-  public MarkdownWriter writeText(final String text, final boolean wrap, final int hangingIndent)
-      throws IOException {
-    requireNonNull(text, "text");
-    if (hangingIndent < 0) {
-      throw new IllegalArgumentException("hangingIndent must be non-negative");
-    }
-
-    boolean firstWord = true;
-    for (final String word : text.split("\\p{IsWhite_Space}")) {
-      // This isn't entirely correct, but it's close enough I guess
-      if (wrap && column + word.length() > wrapColumn) {
-        writeLineBreak();
-        for (int i = 0; i < hangingIndent; i++) {
-          writeSpace();
-        }
-      } else if (!firstWord) {
-        writeSpace();
-      }
-      writer.write(word);
-      column += word.length();
-      firstWord = false;
-      consecutiveLineBreaks = 0;
-    }
-    return this;
+  @Override
+  public String toString() {
+    return "MarkdownWriter{} " + super.toString();
   }
 }

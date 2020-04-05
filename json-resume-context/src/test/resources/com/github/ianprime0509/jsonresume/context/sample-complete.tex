@@ -1,0 +1,236 @@
+% Common resume preamble
+% All variables used are in the resume namespace.
+% TODO: maybe make the margin configurable?
+\setuplayout[
+  backspace=1in,
+  cutspace=1in,
+  topspace=1in,
+  bottomspace=1in,
+  margin=0pt,
+  header=0pt,
+  footer=0pt,
+  width=fit,
+  height=fit]
+\setuppagenumbering[location=]
+\setupbodyfont[termes]
+\switchtobodyfont[10pt]
+\setupinteraction[state=start,color=blank,style=normal]
+\placebookmarks[Section,SectionItem][force=yes]
+
+% Fancy section item headers ("quad-headers")
+\startluacode
+  userdata = userdata or {}
+
+  function userdata.quadheader(t1, t2, t3, t4)
+    context([[\vbox{]])
+    context([[\hbox to \textwidth {\bf %s \wordright{%s}}]], t1, t2)
+    if #t3 > 0 or #t4 > 0 then
+      context([[\hbox to \textwidth {\tf\em %s \wordright{%s}}]], t3, t4)
+    end
+    context("}")
+  end
+\stopluacode
+
+\define[4]\QuadHeader{\ctxlua{
+  userdata.quadheader([=[#1]=], [=[#2]=], [=[#3]=], [=[#4]=])}}
+
+% Utility commands
+\define[2]\URL{{\useurl[url][#1][][#2]\from[url]}}
+\define[1]\Email{\URL{mailto:#1}{#1}}
+\define[1]\Phone{\URL{tel:#1}{#1}}
+\define[1]\DirectURL{\URL{#1}{#1}}
+
+% Section type definitions
+
+% Resume header
+% Variables used:
+% name (required)
+% label
+\definestartstop[Header][
+  before={\startalignment[center]
+    {\bfc\getvariable{resume}{name}}
+    \doifnotempty{\getvariable{resume}{label}}
+      {\blank[halfline]{\bfa\getvariable{resume}{label}}}},
+  after={\stopalignment\blank[2*big]}]
+
+% Header details (e.g. phone, email, address)
+\definestartstop[HeaderDetails][
+  before={\begingroup
+    \switchtobodyfont[8pt]
+    \blank[quarterline]},
+  after={\endgroup}]
+
+% Summary
+\definestartstop[Summary][
+  before={\begingroup
+    \switchtobodyfont[9pt]
+    \blank[halfline]},
+  after={\endgroup}]
+
+% Section
+\definehead[Section][subject][after={\hrule \blank[halfline]},style=\bfa]
+
+% Section item
+% Structure variables:
+% info1, info2, info3 - quad-header information
+\define[2]\SectionItemHeading
+  {\QuadHeader{#2}
+    {\structureuservariable{info1}}
+    {\structureuservariable{info2}}
+    {\structureuservariable{info3}}}
+\definehead[SectionItem][subsubject][
+  command=\SectionItemHeading,
+  before={\blank[halfline]},
+  after={},
+  style=\bf]
+
+% Highlights
+\defineitemgroup[Highlights]
+\setupitemgroup[Highlights][each][2,packed][before={},after={}]
+
+% Locale-dependent preamble
+
+% Location: address, postal code, city, country code, region
+\define[5]\Location{#1 \crlf #3, #5 #2, #4}
+\setuppapersize[letter]
+
+\setvariables[resume][name={John Smith}]
+\setvariables[resume][label={Programmer}]
+\setupinteraction[title={\getvariable{resume}{name}},author={\getvariable{resume}{name}}]
+\starttext
+
+\startHeader
+\startHeaderDetails
+\Email{john.smith@example.com}\crlf
+\Phone{555-555-5555}\crlf
+\DirectURL{https://example.com}\crlf
+\blank[halfline]\Location{1234 Main Street}{33323}{Sunrise}{US}{Florida}\crlf
+\stopHeaderDetails
+\startSummary
+I'm just a normal guy.
+\stopSummary
+\stopHeader
+
+\startSection[title={Work}]
+
+\startSectionItem[title={Example Corporation}][info1={January 2020 - present},info2={Example creator},info3={Miami, FL}]
+
+{\em Example creation firm}\crlf
+\blank[halfline]
+
+I create interesting examples for corporate schemas.
+\blank[halfline]
+
+\startHighlights
+\item Create engaging examples for clients
+\item Daydream for four to five hours per day
+\item Write briefings to executives that I don't understand
+\stopHighlights
+\stopSectionItem
+
+\startSectionItem[title={Anti-Example Incorporated}][info1={2019 - January 2020},info2={},info3={Hastings, NE}]
+
+{\em Example destruction firm}\crlf
+\blank[halfline]
+
+I destroyed boring examples for corporate schemas.
+\blank[halfline]
+
+\startHighlights
+\item Destroy useless and redundant examples
+\stopHighlights
+\stopSectionItem
+\stopSection
+
+\startSection[title={Volunteer}]
+
+\startSectionItem[title={Volunteers R Us},info1={June 7, 2017 - June 8, 2017},info2={Phone technician}]
+
+I worked with people's phones.
+\blank[halfline]
+
+\startHighlights
+\stopHighlights
+\stopSectionItem
+\stopSection
+
+\startSection[title={Education}]
+
+\startSectionItem[title={University of State University College}][info1={2001 - 2011},info2={Bachelor of Nothingness --- Example creation},info3={GPA 4.5}]
+
+\startHighlights
+\item CSE101 - Computer Science for Example Creators
+\item MATH501 - Introduction to Abstract Example Creation Theory
+\stopHighlights
+\stopSectionItem
+\stopSection
+
+\startSection[title={Awards}]
+
+\startSectionItem[title={Best Example Creator of the Year}][info1={2018},info2={Myself}]
+
+Received for creating the best example of the year, as judged by yours truly.
+\blank[halfline]
+\stopSectionItem
+\stopSection
+
+\startSection[title={Publications}]
+
+\startSectionItem[title={Examples of Examples: an Exploration of Meta-Example Theory}][info1={December 31, 2015},info2={International Journal of Example Research}]
+
+An exploration of Meta-Example Theory, with a particular focus on recursive
+examples.
+\blank[halfline]
+\stopSectionItem
+\stopSection
+
+\startSection[title={Skills}]
+
+\startHighlights
+\item {\bf Example creation} --- Master
+\item {\bf Example destruction} --- Rank amateur
+\stopHighlights
+\stopSection
+
+\startSection[title={Langauges}]
+
+\startHighlights
+\item {\bf English} --- Native
+\item {\bf Java} --- Conversational
+\stopHighlights
+\stopSection
+
+\startSection[title={Interests}]
+
+\startHighlights
+\item {\bf Self-introspection}
+\item {\bf Conversation}
+\stopHighlights
+\stopSection
+
+\startSection[title={References}]
+
+\startSectionItem[title={George Washington}]
+If I were still alive, I would make John Smith my vice president.
+\stopSectionItem
+\blank[halfline]
+\startSectionItem[title={John Smith}]
+The best example creator I've ever had the pleasure of working with.
+\stopSectionItem
+\stopSection
+
+\startSection[title={Projects}]
+
+\startSectionItem[title={The Wheel}][info1={2000 - 2001},info2={Sole inventor},info3={John Smith Inventions, Inc.}]
+
+{\em A round thing that can spin on an axel, serving as a central component of
+most vehicles.}\crlf
+\blank[halfline]
+
+\startHighlights
+\item It's the most important invention, besides sliced bread
+\item I literally invented the wheel; all you can do is re-invent it
+\stopHighlights
+\stopSectionItem
+\stopSection
+\stoptext
