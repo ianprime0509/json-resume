@@ -23,6 +23,7 @@ import com.github.ianprime0509.jsonresume.core.Work;
 import com.github.ianprime0509.jsonresume.core.format.DateFormatter;
 import com.github.ianprime0509.jsonresume.core.format.DateStyle;
 import com.github.ianprime0509.jsonresume.core.resource.SingleFileResourceBundleControl;
+import com.github.ianprime0509.jsonresume.core.resource.Utf8PropertiesResourceBundleControl;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -289,7 +290,7 @@ public final class ContextResumeFormatter implements ResumeFormatter {
     }
     if (education.area() != null) {
       if (study.length() > 0) {
-        study.append(" --- ");
+        study.append(" — ");
       }
       study.append(education.area());
     }
@@ -371,7 +372,7 @@ public final class ContextResumeFormatter implements ResumeFormatter {
                 skill -> {
                   final String name = "{\\bf " + writer.escape(skill.name()) + "}";
                   if (skill.level() != null) {
-                    return name + " --- " + writer.escape(skill.level());
+                    return name + " — " + writer.escape(skill.level());
                   } else {
                     return name;
                   }
@@ -389,7 +390,7 @@ public final class ContextResumeFormatter implements ResumeFormatter {
                 language -> {
                   final String name = "{\\bf " + writer.escape(language.language()) + "}";
                   if (language.fluency() != null) {
-                    return name + " --- " + writer.escape(language.fluency());
+                    return name + " — " + writer.escape(language.fluency());
                   } else {
                     return name;
                   }
@@ -484,7 +485,9 @@ public final class ContextResumeFormatter implements ResumeFormatter {
       if (paperSize == null) {
         final ResourceBundle contextBundle =
             ResourceBundle.getBundle(
-                "com.github.ianprime0509.jsonresume.context.ContextBundle", locale);
+                "com.github.ianprime0509.jsonresume.context.ContextBundle",
+                locale,
+                Utf8PropertiesResourceBundleControl.INSTANCE);
         paperSize(contextBundle.getString("paper-size.default"));
       }
       return new ContextResumeFormatter(this);

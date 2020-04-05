@@ -1,4 +1,4 @@
-# John Smith - Programmer
+# John Smith — Programmer
 
 ![My image](https://example.com/example.png)
 
@@ -14,7 +14,7 @@ I'm just a normal guy.
 
 ## Work
 
-### Example Corporation - Example creator (January 2020 - present)
+### Example Corporation — Example creator (January 2020 – present)
 
 *Example creation firm*
 
@@ -27,7 +27,7 @@ I create interesting examples for corporate schemas.
 - Daydream for four to five hours per day
 - Write briefings to executives that I don't understand
 
-### Anti-Example Incorporated (2019 - January 2020)
+### Anti-Example Incorporated (2019 – January 2020)
 
 *Example destruction firm*
 
@@ -39,7 +39,7 @@ I destroyed boring examples for corporate schemas.
 
 ## Volunteer
 
-### Volunteers R Us - Phone technician (June 7, 2017 - June 8, 2017)
+### Volunteers R Us — Phone technician (June 7, 2017 – June 8, 2017)
 
 I worked with people's phones.
 
@@ -47,24 +47,24 @@ I worked with people's phones.
 
 ## Education
 
-### University of State University College (2001 - 2011)
+### University of State University College (2001 – 2011)
 
 Bachelor of Nothingness: Example creation
 
 **GPA**: 4.5  
 
-- CSE101 - Computer Science for Example Creators
-- MATH501 - Introduction to Abstract Example Creation Theory
+- CSE101 — Computer Science for Example Creators
+- MATH501 — Introduction to Abstract Example Creation Theory
 
 ## Awards
 
-### Best Example Creator of the Year - Myself (2018)
+### Best Example Creator of the Year — Myself (2018)
 
 Received for creating the best example of the year, as judged by yours truly.
 
 ## Publications
 
-### Examples of Examples: an Exploration of Meta-Example Theory - International Journal of Example Research (December 31, 2015)
+### Examples of Examples: an Exploration of Meta-Example Theory — International Journal of Example Research (December 31, 2015)
 
 An exploration of Meta-Example Theory, with a particular focus on recursive
 examples.
@@ -73,13 +73,13 @@ examples.
 
 ## Skills
 
-- Example creation - Master
-- Example destruction - Rank amateur
+- Example creation — Master
+- Example destruction — Rank amateur
 
 ## Langauges
 
-- English - Native
-- Java - Conversational
+- English — Native
+- Java — Conversational
 
 ## Interests
 
@@ -88,14 +88,14 @@ examples.
 
 ## References
 
-- George Washington - If I were still alive, I would make John Smith my vice
+- George Washington — If I were still alive, I would make John Smith my vice
   president.
-- John Smith - The best example creator I've ever had the pleasure of working
+- John Smith — The best example creator I've ever had the pleasure of working
   with.
 
 ## Projects
 
-### The Wheel - Sole inventor (2000 - 2001)
+### The Wheel — Sole inventor (2000 – 2001)
 
 A round thing that can spin on an axel, serving as a central component of most
 vehicles.

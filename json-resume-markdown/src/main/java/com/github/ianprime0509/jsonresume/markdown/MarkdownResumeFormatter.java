@@ -22,6 +22,7 @@ import com.github.ianprime0509.jsonresume.core.Volunteer;
 import com.github.ianprime0509.jsonresume.core.Work;
 import com.github.ianprime0509.jsonresume.core.format.DateFormatter;
 import com.github.ianprime0509.jsonresume.core.format.DateStyle;
+import com.github.ianprime0509.jsonresume.core.resource.Utf8PropertiesResourceBundleControl;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
@@ -47,10 +48,14 @@ public final class MarkdownResumeFormatter implements ResumeFormatter {
     this.locale = builder.locale;
     this.resourceBundle =
         ResourceBundle.getBundle(
-            "com.github.ianprime0509.jsonresume.core.ResumeBundle", builder.locale);
+            "com.github.ianprime0509.jsonresume.core.ResumeBundle",
+            builder.locale,
+            Utf8PropertiesResourceBundleControl.INSTANCE);
     this.markdownResourceBundle =
         ResourceBundle.getBundle(
-            "com.github.ianprime0509.jsonresume.markdown.MarkdownBundle", builder.locale);
+            "com.github.ianprime0509.jsonresume.markdown.MarkdownBundle",
+            builder.locale,
+            Utf8PropertiesResourceBundleControl.INSTANCE);
     this.dateFormatter = builder.dateStyle.getFormatter(builder.locale);
   }
 
@@ -134,7 +139,7 @@ public final class MarkdownResumeFormatter implements ResumeFormatter {
   private void formatBasics(final MarkdownWriter writer, final Basics basics) throws IOException {
     final StringBuilder heading = new StringBuilder(basics.name());
     if (basics.label() != null) {
-      heading.append(" - ").append(basics.label());
+      heading.append(" — ").append(basics.label());
     }
     writer.writeHeading(heading.toString(), 1);
     writer.ensureBlankLines(1);
@@ -220,7 +225,7 @@ public final class MarkdownResumeFormatter implements ResumeFormatter {
   private void formatWork(final MarkdownWriter writer, final Work work) throws IOException {
     final StringBuilder heading = new StringBuilder(work.name());
     if (work.position() != null) {
-      heading.append(" - ").append(work.position());
+      heading.append(" — ").append(work.position());
     }
     heading
         .append(" (")
@@ -259,7 +264,7 @@ public final class MarkdownResumeFormatter implements ResumeFormatter {
       throws IOException {
     final StringBuilder heading = new StringBuilder(volunteer.organization());
     if (volunteer.position() != null) {
-      heading.append(" - ").append(volunteer.position());
+      heading.append(" — ").append(volunteer.position());
     }
     heading
         .append(" (")
@@ -323,7 +328,7 @@ public final class MarkdownResumeFormatter implements ResumeFormatter {
   private void formatAward(final MarkdownWriter writer, final Award award) throws IOException {
     final StringBuilder heading = new StringBuilder(award.title());
     if (award.awarder() != null) {
-      heading.append(" - ").append(award.awarder());
+      heading.append(" — ").append(award.awarder());
     }
     if (award.date() != null) {
       heading.append(" (").append(dateFormatter.format(award.date())).append(")");
@@ -340,7 +345,7 @@ public final class MarkdownResumeFormatter implements ResumeFormatter {
       throws IOException {
     final StringBuilder heading = new StringBuilder(publication.name());
     if (publication.publisher() != null) {
-      heading.append(" - ").append(publication.publisher());
+      heading.append(" — ").append(publication.publisher());
     }
     if (publication.releaseDate() != null) {
       heading.append(" (").append(dateFormatter.format(publication.releaseDate())).append(")");
@@ -363,7 +368,7 @@ public final class MarkdownResumeFormatter implements ResumeFormatter {
   private void formatSkill(final MarkdownWriter writer, final Skill skill) throws IOException {
     final StringBuilder formattedSkill = new StringBuilder(skill.name());
     if (skill.level() != null) {
-      formattedSkill.append(" - ").append(skill.level());
+      formattedSkill.append(" — ").append(skill.level());
     }
     writer.writeList(singletonList(formattedSkill.toString()));
   }
@@ -372,7 +377,7 @@ public final class MarkdownResumeFormatter implements ResumeFormatter {
       throws IOException {
     final StringBuilder formattedLanguage = new StringBuilder(language.language());
     if (language.fluency() != null) {
-      formattedLanguage.append(" - ").append(language.fluency());
+      formattedLanguage.append(" — ").append(language.fluency());
     }
     writer.writeList(singletonList(formattedLanguage.toString()));
   }
@@ -386,7 +391,7 @@ public final class MarkdownResumeFormatter implements ResumeFormatter {
       throws IOException {
     final StringBuilder formattedReference = new StringBuilder(reference.name());
     if (reference.reference() != null) {
-      formattedReference.append(" - ").append(reference.reference());
+      formattedReference.append(" — ").append(reference.reference());
     }
     writer.writeList(singletonList(formattedReference.toString()));
   }
@@ -395,7 +400,7 @@ public final class MarkdownResumeFormatter implements ResumeFormatter {
       throws IOException {
     final StringBuilder heading = new StringBuilder(project.name());
     if (!project.roles().isEmpty()) {
-      heading.append(" - ").append(String.join(", ", project.roles()));
+      heading.append(" — ").append(String.join(", ", project.roles()));
     }
     if (project.startDate() != null) {
       heading

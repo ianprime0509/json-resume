@@ -26,10 +26,24 @@ public final class SingleFileResourceBundle extends ResourceBundle {
     this.contents = requireNonNull(contents, "contents");
   }
 
+  /**
+   * Loads a {@link SingleFileResourceBundle} from the given {@link InputStream} using UTF-8.
+   *
+   * @param inputStream the {@code InputStream} to read from
+   * @return the {@code SingleFileResourceBundle} read from the input
+   * @throws IOException if an exception is thrown while reading from the input
+   */
   public static SingleFileResourceBundle load(final InputStream inputStream) throws IOException {
     return load(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
   }
 
+  /**
+   * Loads a {@link SingleFileResourceBundle} from the given {@link Reader}.
+   *
+   * @param reader the {@code Reader} to read from
+   * @return the {@code SingleFileResourceBundle} read from the input
+   * @throws IOException if an exception is thrown while reading from the input
+   */
   public static SingleFileResourceBundle load(final Reader reader) throws IOException {
     final StringBuilder contents = new StringBuilder();
     final char[] buffer = new char[8192];

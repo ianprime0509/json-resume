@@ -1,5 +1,6 @@
 package com.github.ianprime0509.jsonresume.core.format;
 
+import com.github.ianprime0509.jsonresume.core.resource.Utf8PropertiesResourceBundleControl;
 import com.ibm.icu.text.DateFormat;
 import java.text.MessageFormat;
 import java.time.LocalDate;
@@ -30,7 +31,9 @@ final class StandardDateFormatter extends AbstractDateFormatter {
     this.locale = locale;
     final ResourceBundle formatBundle =
         ResourceBundle.getBundle(
-            "com.github.ianprime0509.jsonresume.core.format.FormatBundle", locale);
+            "com.github.ianprime0509.jsonresume.core.format.FormatBundle",
+            locale,
+            Utf8PropertiesResourceBundleControl.INSTANCE);
     continuingDateRangeFormat = formatBundle.getString("date-range.continuing");
     closedDateRangeFormat = formatBundle.getString("date-range.closed");
   }
