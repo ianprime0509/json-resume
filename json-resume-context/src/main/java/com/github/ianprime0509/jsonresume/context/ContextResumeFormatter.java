@@ -408,21 +408,14 @@ public final class ContextResumeFormatter implements ResumeFormatter {
     writer.writeRawLine("\\stopHighlights");
   }
 
-  private void formatReference(final ContextWriter writer, final List<Reference> references)
+  private void formatReference(final ContextWriter writer, final Reference reference)
       throws IOException {
-    for (int i = 0; i < references.size(); i++) {
-      if (i > 0) {
-        writer.writeRawLine("\\blank[halfline]");
-      }
-
-      final Reference reference = references.get(i);
-      writer.writeRawLine("\\startSectionItem[title={" + writer.escape(reference.name()) + "}]");
-      if (reference.reference() != null) {
-        writer.writeText(reference.reference());
-        writer.writeLineBreak();
-      }
-      writer.writeRawLine("\\stopSectionItem");
+    writer.writeRawLine("\\startSectionItem[title={" + writer.escape(reference.name()) + "}]");
+    if (reference.reference() != null) {
+      writer.writeText(reference.reference());
+      writer.writeLineBreak();
     }
+    writer.writeRawLine("\\stopSectionItem");
   }
 
   private void formatProject(final ContextWriter writer, final Project project) throws IOException {
